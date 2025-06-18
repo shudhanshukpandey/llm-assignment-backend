@@ -18,7 +18,16 @@ This guide helps you set up and run a FastAPI backend using either `venv` or `co
 ## 📁 Project Structure (Example)
 
 ```
-
+|-llm_services
+|-src
+|   |-app_core
+|   |-models
+|   |-routers
+|   |-schemas
+|   |-services
+|   |-app.py
+|-main.py
+|-requirements.py
 ```
 
 ---
@@ -73,7 +82,7 @@ conda activate fastapi-env
 ### 🔹 Basic Run
 
 ```bash
-uvicorn app.main:app --reload
+uvicorn main:app --reload
 ```
 
 - `--reload` enables auto-reload on code changes (useful in development)
