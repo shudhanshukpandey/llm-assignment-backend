@@ -5,7 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 
 from src.routers import (
-    root_api
+    root_api,
+    podcast_api
 )
 
 
@@ -21,3 +22,4 @@ app.add_middleware(
 
 
 app.include_router(root_api, prefix="", tags=["Root Page"])
+app.include_router(podcast_api, prefix="", tags=["Podcast API"])
