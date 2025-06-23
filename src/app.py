@@ -22,4 +22,4 @@ app.add_middleware(
 
 
 app.include_router(root_api, prefix="", tags=["Root Page"])
-app.include_router(podcast_api, prefix="", tags=["Podcast API"])
+app.include_router(podcast_api, prefix="/asses-pod", tags=["Podcast API"])

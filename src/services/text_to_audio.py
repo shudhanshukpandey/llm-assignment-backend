@@ -7,4 +7,4 @@ def generate_audio(text: str, lang="en") -> str:
     tts = gTTS(text=text, lang=lang)
     path = f"src/outputs/{filename}"
     tts.save(path)
-    return path
+    return path, filename

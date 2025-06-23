@@ -9,6 +9,7 @@ import aiofiles
 import os
 from typing import Optional
 from uuid import uuid4
+import base64
 
 router = APIRouter()
 
@@ -35,7 +36,11 @@ async def upload_pdf(
         # Generate summary and audio
         summary = summarize_text(raw_text)
 
-        audio_path = generate_audio(summary)
+        audio_path, audio_file_name = generate_audio(summary)
+
+        with open(audio_path, "rb") as audio_file:
+            audio_base64 = base64.b64encode(audio_file.read()).decode("utf-8")
+
 
         os.remove(temp_path)
 
@@ -44,7 +49,9 @@ async def upload_pdf(
         return {
             "message": message,
             "transcript": summary,
-            "audio_url": audio_path
+            # "audio_url": audio_path,
+            "audio_file_name": audio_file_name,
+            "audio_base64":audio_base64
         }
 
     except Exception as e:
@@ -53,6 +60,22 @@ async def upload_pdf(
     
 
 
+
+
+
+@router.get("/audio/{file_name}")
+async def get_audio(file_name:str):
+    file_path = os.path.join("src","outputs", file_name)
+
+    
+    if not os.path.exists(file_path):
+        return {"error": "File not found"}
+
+    return FileResponse(
+        path=file_path,
+        media_type="audio/mp3",
+        filename=file_name
+    )
 
 
 
