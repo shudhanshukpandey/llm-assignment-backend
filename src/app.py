@@ -6,7 +6,8 @@ from fastapi import FastAPI
 
 from src.routers import (
     root_api,
-    podcast_api
+    podcast_api,
+    process_pdf_api
 )
 
 
@@ -23,3 +24,4 @@ app.add_middleware(
 
 app.include_router(root_api, prefix="", tags=["Root Page"])
 app.include_router(podcast_api, prefix="/asses-pod", tags=["Podcast API"])
+app.include_router(process_pdf_api, prefix="/pdf-rag", tags=["Process PDF API"])

@@ -1,6 +1,11 @@
 
 from src.services import extract_text_from_pdf, generate_audio
-from llm_services import summarize_text
+from llm_services.pdf_summarizer.summarizer import summarize_text
+from src.utils.common import (
+    temp_path_generator,
+    file_generator,
+    base64_converter
+)
 
 
 from fastapi import APIRouter, File, Form, UploadFile, HTTPException
@@ -19,11 +24,9 @@ async def upload_pdf(
     password: Optional[str] = Form(None)  # Optional password from form
 ):
     temp_path = f"temp_{uuid4()}_{file.filename}"
+    temp_path = temp_path_generator(temp_path)
 
-    # Save uploaded file temporarily
-    async with aiofiles.open(temp_path, 'wb') as out_file:
-        content = await file.read()
-        await out_file.write(content)
+    await file_generator(temp_path, file)
 
     try:
         # Extract text with optional password
@@ -38,8 +41,8 @@ async def upload_pdf(
 
         audio_path, audio_file_name = generate_audio(summary)
 
-        with open(audio_path, "rb") as audio_file:
-            audio_base64 = base64.b64encode(audio_file.read()).decode("utf-8")
+
+        base64_data = await base64_converter(temp_path)
 
 
         os.remove(temp_path)
@@ -51,7 +54,7 @@ async def upload_pdf(
             "transcript": summary,
             # "audio_url": audio_path,
             "audio_file_name": audio_file_name,
-            "audio_base64":audio_base64
+            "audio_base64":base64_data
         }
 
     except Exception as e:

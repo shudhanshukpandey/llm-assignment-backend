@@ -4,7 +4,7 @@ from langchain_core.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 
 from src.app_core.app_settings import OPENAI_API_KEY
-from llm_services.summarizer_prompt import summary_template 
+from llm_services.pdf_summarizer.summarizer_prompt import summary_template 
 
 # openai.api_key = OPENAI_API_KEY
 
