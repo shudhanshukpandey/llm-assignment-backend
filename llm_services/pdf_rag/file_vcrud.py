@@ -28,7 +28,7 @@ def retrieve_data(question, db_path):
     )
 
     retrival_chain = create_retrieval_chain(
-        vector_db.as_retriever(search_kwargs= {"k":5}), combine_docs_chain
+        vector_db.as_retriever(search_kwargs= {"k":3}), combine_docs_chain
     )
 
     answer = retrival_chain.invoke({"input":question})

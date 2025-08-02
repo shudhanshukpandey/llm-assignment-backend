@@ -29,12 +29,18 @@ async def get_response(question, thread_id):
     vector_db_path = temp_path_generator(str(thread_id),"llm_services","local_vector_db")
     response = retrieve_data(question.question, vector_db_path)
 
+
     audio_file_path, auddio_file_name = generate_audio(response.get('answer'))
 
     base64_data = await base64_converter(audio_file_path)
     os.remove(audio_file_path)
    
-    return {"status":True,"answer":response.get('answer'), "audio_base64":base64_data}
+    return {"status":True,
+            "answer":response.get('answer'), 
+            "context":response.get("context"),
+            "audio_base64":base64_data
+            
+            }
 
 
    
